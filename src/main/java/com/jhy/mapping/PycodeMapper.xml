@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jhy.dao.PycodeMapper" >
+  <resultMap id="BaseResultMap" type="com.jhy.pojo.Pycode" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="codea" property="codea" jdbcType="VARCHAR" />
+    <result column="codeb" property="codeb" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, name, codea, codeb
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from pycode
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from pycode
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.jhy.pojo.Pycode" >
+    insert into pycode (id, name, codea, 
+      codeb)
+    values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{codea,jdbcType=VARCHAR}, 
+      #{codeb,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jhy.pojo.Pycode" >
+    insert into pycode
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="codea != null" >
+        codea,
+      </if>
+      <if test="codeb != null" >
+        codeb,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="codea != null" >
+        #{codea,jdbcType=VARCHAR},
+      </if>
+      <if test="codeb != null" >
+        #{codeb,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jhy.pojo.Pycode" >
+    update pycode
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="codea != null" >
+        codea = #{codea,jdbcType=VARCHAR},
+      </if>
+      <if test="codeb != null" >
+        codeb = #{codeb,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jhy.pojo.Pycode" >
+    update pycode
+    set name = #{name,jdbcType=VARCHAR},
+      codea = #{codea,jdbcType=VARCHAR},
+      codeb = #{codeb,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <select id="getCode" resultType="java.util.Map">
+    select * FROM pycode where codeb=0;
+  </select>
+
+  <select id="getCode1" resultType="java.util.Map">
+    select * FROM pycode where codeb = (select codea FROM pycode where id = #{code});
+  </select>
+</mapper>
